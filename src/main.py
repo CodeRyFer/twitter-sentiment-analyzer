@@ -1,18 +1,18 @@
 import tweepy
 from textblob import TextBlob
+from dotenv import load_dotenv
+import os
 
-consumer_key = 'rczZDXlAKoWfepiJIjAiB6sLx'
-consumer_secret = '4GdjNhUYyBdyIipIgkFJxcFMK1GC05cebYO17nHQnkViUKEFcJ'
+# Twitter API v2 credentials
+load_dotenv()
+bearer_token = os.environ.get('BEARER_TOKEN')
 
-access_token = '1535726073987616768-m8O6o9ffOXnQM6y5Oem9z4j8nFM7a2'
-access_secret = 'f5PL9W6dR3Mjyo3fHkybNTTq9GsSvMsBPiXhUno7bLfTk'
+# Create a Tweepy client for API v2
+client = tweepy.Client(bearer_token=bearer_token)
 
-auth = tweepy.OAuth1UserHandler(consumer_key, consumer_secret)
-auth.set_access_token(access_token, access_secret)
-
-api = tweepy.API(auth)
-
-public_tweets = api.search_tweets('Trump')
+query = 'Trump'
+response = client.search_recent_tweets(query=query, max_results=10)
+public_tweets = response.data if response.data else []
 
 for tweet in public_tweets:
     print(tweet.text)
