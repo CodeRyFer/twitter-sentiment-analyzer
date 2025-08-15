@@ -14,7 +14,9 @@ query = 'Trump'
 response = client.search_recent_tweets(query=query, max_results=10)
 public_tweets = response.data if response.data else []
 
-for tweet in public_tweets:
+for i, tweet in enumerate(public_tweets, 1):
+    print(f"Tweet #{i}:")
     print(tweet.text)
     analysis = TextBlob(tweet.text)
-    print(analysis.sentiment)
+    print(f"Sentiment: polarity={analysis.polarity:.2f}, subjectivity={analysis.subjectivity:.2f}")
+    print("-" * 40)
